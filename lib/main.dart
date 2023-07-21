@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tell_craft/home.dart';
 
 void main() {
-  runApp(const home());
+  runApp(const Home());
 }
 
 class MainApp extends StatelessWidget {

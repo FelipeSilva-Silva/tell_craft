@@ -17,3 +17,12 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/Carousel1.png 
+    - assets/images/Carousel2.png
+    - assets/images/Carousel3.png
+    - assets/images/miniclock.png
+    - assets/images/personLogo.png
+    - assets/images/tellCraft.png
+    
+
