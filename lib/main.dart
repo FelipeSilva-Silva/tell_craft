@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tell_craft/features/login/login_page.dart';
+import 'package:tell_craft/features/text_generator/text_generator_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Tell_Craft',
       theme: ThemeData.dark(),
-      home: const LoginPage(),
+      home: const TextGenerator(
+        text: 'oi',
+      ),
     );
   }
 }
