@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tell_craft/features/login/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -31,6 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.email),
                           border: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(15))),
@@ -43,10 +45,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: TextFormField(
                         keyboardType: TextInputType.visiblePassword,
                         decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.lock),
                           border: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(15))),
-                          labelText: 'senha',
+                          labelText: 'Senha',
                         ),
                       ),
                     ),
@@ -55,6 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: TextFormField(
                         keyboardType: TextInputType.visiblePassword,
                         decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.lock_reset),
                           border: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(15))),
@@ -71,7 +75,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   width: 200,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ));
+                    },
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStatePropertyAll(Colors.amber[600])),
