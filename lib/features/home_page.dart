@@ -9,7 +9,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _indePage = 0;
   final List<String> _list = [
     'assets/images/Carousel1.png',
     'assets/images/Carousel2.png',
