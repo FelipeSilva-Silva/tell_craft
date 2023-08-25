@@ -9,6 +9,16 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
+// pegar da api depois
+final List<String> _recentStories = [
+  'História 1',
+  'História 2',
+  'História 3',
+  'História 4',
+  'História 5',
+  'Historia 6'
+];
+
 class _HomeState extends State<Home> {
   final List<String> _listImages = [
     'assets/images/Carousel1.png',
@@ -71,7 +81,33 @@ class _HomeState extends State<Home> {
                 ],
               ),
               const SizedBox(height: 20),
-              // fazer o grid com as historias recentes
+              Expanded(
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 5,
+                    crossAxisSpacing: 10,
+                  ),
+                  itemCount: _recentStories.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: Container(
+                        color: const Color(0xFF24262E),
+                        height:
+                            50, // arranjar um jeito pra diminuir o tamanho do quadrado
+                        child: Center(
+                          child: Text(
+                            _recentStories[index],
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
