@@ -62,7 +62,16 @@ class _HomeState extends State<Home> {
                   },
                 ),
               ),
-              Container()
+              const SizedBox(height: 20),
+              const Row(
+                children: [
+                  Icon(Icons.history),
+                  SizedBox(width: 5),
+                  Text("Suas Histórias"),
+                ],
+              ),
+              const SizedBox(height: 20),
+              // fazer o grid com as historias recentes
             ],
           ),
         ),
