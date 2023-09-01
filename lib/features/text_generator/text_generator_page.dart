@@ -25,67 +25,54 @@ class _TextGeneratorState extends State<TextGenerator> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 10),
-          const Text(
-            'Historia X',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 20,
-                  ),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 1.10,
-                    height: MediaQuery.of(context).size.height * 0.72,
-                    color: const Color(0xff24262e),
-                    child: Text(
-                      widget.text,
-                      style: const TextStyle(
-                          color: Colors.white, fontStyle: FontStyle.normal),
-                      textAlign: TextAlign.justify,
-                    ),
-                  ),
-                ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            const Text(
+              'Historia X',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
               ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              const SizedBox(width: 15),
-              ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.black),
-                ),
-                child: const Row(
-                  children: [
-                    Icon(
-                      Icons.add,
-                      color: Colors.white,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 20,
                     ),
-                    SizedBox(width: 5),
-                    Text(
-                      'Gerar texto',
-                      style: TextStyle(
-                        color: Colors.white,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 1.10,
+                      height: MediaQuery.of(context).size.height * 0.72,
+                      color: const Color(0xff24262e),
+                      child: TextField(
+                        controller: TextEditingController(text: widget.text),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontStyle: FontStyle.normal,
+                        ),
+                        textAlign: TextAlign.justify,
+                        maxLines: null,
+                        decoration: const InputDecoration(
+                          fillColor: Color(0xff24262e),
+                          filled: true,
+                          border: InputBorder.none,
+                        ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              ElevatedButton(
+              ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                const SizedBox(width: 15),
+                ElevatedButton(
                   onPressed: () {},
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.black),
@@ -93,21 +80,44 @@ class _TextGeneratorState extends State<TextGenerator> {
                   child: const Row(
                     children: [
                       Icon(
-                        Icons.refresh,
+                        Icons.add,
                         color: Colors.white,
                       ),
                       SizedBox(width: 5),
                       Text(
-                        'Refazer',
+                        'Gerar texto',
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
                     ],
-                  ))
-            ],
-          ),
-        ],
+                  ),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.black),
+                    ),
+                    child: const Row(
+                      children: [
+                        Icon(
+                          Icons.refresh,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          'Refazer',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ))
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
