@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:tell_craft/services/text_api/api_service.dart';
 
 class TextGenerator extends StatefulWidget {
   final String text;
@@ -73,7 +76,16 @@ class _TextGeneratorState extends State<TextGenerator> {
               children: [
                 const SizedBox(width: 15),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    try {
+                      log("Request has been sent");
+                      await ApiService.sendMessage(
+                          // trocar pelo controller
+                          message: "faça uma reflexão sobre a vida");
+                    } catch (e) {
+                      print("error $e");
+                    }
+                  },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.black),
                   ),
