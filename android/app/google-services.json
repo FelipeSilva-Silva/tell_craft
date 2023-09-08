@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "959962573771",
+    "project_id": "tellcraft-ab21f",
+    "storage_bucket": "tellcraft-ab21f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:959962573771:android:837a68f79aa0bc6612244e",
+        "android_client_info": {
+          "package_name": "com.example.tell_craft"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "959962573771-o7d7e7pef4pif8ndq7ig7lsidv7que6i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcC0JjGDSoaZLKKj_1DwnW2xmSB9_0TXA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "959962573771-o7d7e7pef4pif8ndq7ig7lsidv7que6i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
