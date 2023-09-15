@@ -81,7 +81,7 @@ class _TextGeneratorState extends State<TextGenerator> {
                       log("Request has been sent");
                       await ApiService.sendMessage(
                           // trocar pelo controller
-                          message: "faça uma reflexão sobre a vida");
+                          message: "o que é flutter");
                     } catch (e) {
                       print("error $e");
                     }

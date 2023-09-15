@@ -3,46 +3,16 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:tell_craft/constants/api_consts.dart';
-import 'package:tell_craft/models/models_model.dart';
 
 class ApiService {
-  static Future<List<ModelsModel>> getModels() async {
-    try {
-      var response = await http.get(
-        Uri.parse("$BASE_URL/models/gpt-3.5-turbo"),
-        headers: {'Authorization': 'Bearer $API_KEY'},
-      );
-
-      Map jsonResponse = jsonDecode(response.body);
-
-      if (jsonResponse['error'] != null) {
-        //print("jsonResponse['error'] ${jsonResponse['error']["message"]}");
-        throw HttpException(jsonResponse['error']["message"]);
-      }
-
-      //print("jsonResponse $jsonResponse");
-      List temp = [];
-      for (var value in jsonResponse["data"]) {
-        temp.add(value);
-        //log("temp ${value["id"]}");
-      }
-
-      return ModelsModel.modelsFromSnapshot(temp);
-    } catch (error) {
-      log("error $error");
-      rethrow;
-    }
-  }
-
-  // send message fct
   static Future<void> sendMessage({required String message}) async {
     try {
       var response = await http.post(
-        Uri.parse("$BASE_URL/completions"),
+        Uri.parse("https://api.openai.com/v1/completions"),
         headers: {
-          'Authorization': 'Bearer $API_KEY',
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json',
+          'Authorization':
+              'Bearer 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',
         },
         body: jsonEncode(
           {
@@ -53,16 +23,27 @@ class ApiService {
         ),
       );
 
-      Map jsonResponse = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        // Verifique o tipo de conteúdo da resposta
+        if (response.headers['content-type'] ==
+            'application/json; charset=utf-8') {
+          // A resposta é JSON válida
+          Map jsonResponse = jsonDecode(response.body);
 
-      if (jsonResponse['error'] != null) {
-        //print("jsonResponse['error'] ${jsonResponse['error']["message"]}");
-        throw HttpException(jsonResponse['error']["message"]);
-      }
+          if (jsonResponse['error'] != null) {
+            throw HttpException(jsonResponse['error']["message"]);
+          }
 
-      // choices tem a respostas
-      if (jsonResponse["choices"].lenght > 0) {
-        log("jsonResponse[choices]text ${jsonResponse["choices"][0]["text"]}");
+          if (jsonResponse["choices"].length > 0) {
+            log("jsonResponse[choices] text ${jsonResponse["choices"][0]["text"]}");
+          }
+        } else {
+          // A resposta não é JSON, talvez seja uma mensagem de erro em HTML
+          throw HttpException("Erro na resposta da API: ${response.body}");
+        }
+      } else {
+        // Trate outros códigos de status HTTP, se necessário
+        throw HttpException("Erro de status HTTP: ${response.statusCode}");
       }
     } catch (error) {
       log("error $error");
