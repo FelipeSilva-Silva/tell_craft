@@ -87,6 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           }
                           return null;
                         },
+                        obscureText: true,
                         keyboardType: TextInputType.visiblePassword,
                         decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.lock),
@@ -110,6 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           }
                           return null;
                         },
+                        obscureText: true,
                         keyboardType: TextInputType.visiblePassword,
                         decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.lock_reset),

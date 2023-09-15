@@ -7,6 +7,7 @@ environment:
   sdk: '>=3.1.0-163.1.beta <4.0.0'
 
 dependencies:
+  firebase_core: ^2.15.1
   flutter:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
@@ -39,7 +40,6 @@ dev_dependencies:
   firebase_core_platform_interface: ^4.8.0
 
   # https://pub.dev/packages/firebase_core
-  firebase_core: ^2.15.1
 
   # https://pub.dev/packages/firebase_auth
   firebase_auth: ^4.9.0

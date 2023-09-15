@@ -61,93 +61,87 @@ class _LoginPageState extends State<LoginPage> {
                   height: 100,
                 ),
                 Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                            controller: _email,
-                            validator: (text) {
-                              if (text == null || text.isEmpty) {
-                                return 'Email está vazio';
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: const InputDecoration(
-                                prefixIcon: Icon(Icons.email),
-                                label: Text('Email'),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                  Radius.circular(15),
-                                ))),
-                          ),
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: _email,
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Email está vazio';
+                            }
+                            return null;
+                          },
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: const InputDecoration(
+                              prefixIcon: Icon(Icons.email),
+                              label: Text('Email'),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                Radius.circular(15),
+                              ))),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                            controller: _password,
-                            validator: (text) {
-                              if (text == null || text.isEmpty) {
-                                return 'Senha está vazia';
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: const InputDecoration(
-                                prefixIcon: Icon(Icons.lock),
-                                label: Text('Senha'),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                  Radius.circular(15),
-                                ))),
-                          ),
-                        ),
-                      ],
-                    )),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => RegisterPage()));
-                      },
-                      style: const ButtonStyle(
-                          padding: MaterialStatePropertyAll(
-                              EdgeInsets.only(right: 20, left: 20)),
-                          foregroundColor:
-                              MaterialStatePropertyAll(Colors.white)),
-                      child: const Text('Cadastre-se'),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    Text(
-                      _status, // Exibe a mensagem de erro aqui
-                      style: const TextStyle(
-                        color:
-                            Colors.red, // Cor vermelha para mensagens de erro
                       ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: _password,
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Senha está vazia';
+                            }
+                            return null;
+                          },
+                          obscureText: true,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: const InputDecoration(
+                              prefixIcon: Icon(Icons.lock),
+                              label: Text('Senha'),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                Radius.circular(15),
+                              ))),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => RegisterPage()));
+                    },
+                    style: const ButtonStyle(
+                        padding: MaterialStatePropertyAll(
+                            EdgeInsets.only(right: 20, left: 20)),
+                        foregroundColor:
+                            MaterialStatePropertyAll(Colors.white)),
+                    child: const Text('Cadastre-se'),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    _status, // Exibe a mensagem de erro aqui
+                    style: const TextStyle(
+                      color: Colors.red, // Cor vermelha para mensagens de erro
                     ),
-                  ],
+                  ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: SizedBox(
                     height: 50,
                     width: 200,
                     child: ElevatedButton(
                       onPressed: () {
                         //tirar para deixar o login prestando
-                        //if (_formKey.currentState!.validate()) {
-                        //  _onClickEmailLogin();
-                        //}
+                        // if (_formKey.currentState!.validate()) {
+                        //   _onClickEmailLogin();
+                        // }
 
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (context) => const Home(),
