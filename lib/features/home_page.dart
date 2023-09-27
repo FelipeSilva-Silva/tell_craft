@@ -77,6 +77,7 @@ class _HomeState extends State<Home> {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => TextGenerator(
                           text: _listTexts[indexImages],
+                          title: 'Nova Historia',
                         )));
               },
               child: SizedBox(
@@ -137,7 +138,11 @@ class _HomeState extends State<Home> {
                               stories[index].data() as Map<String, dynamic>;
                           return InkWell(
                             onTap: () {
-                              // tocar na história => abrir historia
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => TextGenerator(
+                                        text: _listTexts[indexImages],
+                                        title: story['title'],
+                                      )));
                             },
                             child: Card(
                               margin: const EdgeInsets.all(

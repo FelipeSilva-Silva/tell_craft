@@ -5,7 +5,8 @@ import 'package:tell_craft/services/text_api/api_service.dart';
 
 class TextGenerator extends StatefulWidget {
   final String text;
-  const TextGenerator({super.key, required this.text});
+  final String title;
+  const TextGenerator({super.key, required this.text, required this.title});
 
   @override
   State<TextGenerator> createState() => _TextGeneratorState();
@@ -32,9 +33,9 @@ class _TextGeneratorState extends State<TextGenerator> {
         child: Column(
           children: [
             const SizedBox(height: 10),
-            const Text(
-              'Historia X',
-              style: TextStyle(
+            Text(
+              widget.title,
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
