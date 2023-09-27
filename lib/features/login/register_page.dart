@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tell_craft/features/login/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +13,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
 
+  final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmPassword = TextEditingController();
@@ -20,22 +22,47 @@ class _RegisterPageState extends State<RegisterPage> {
   late String _status = "";
 
   Future<void> _onClickEmailCreate() async {
-    print("_onClickEmailCreate");
-
     String email = _email.text;
-    String pass = _password.text;
+    String password = _password.text;
+    String name = _name.text;
 
-    _fbAuth
-        .createUserWithEmailAndPassword(email: email, password: pass)
-        .then((firebaseUser) {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      User? user = userCredential.user;
+
+      // Verifica se o usuário foi criado com sucesso
+      if (user != null) {
+        String userId = user.uid;
+
+        Map<String, dynamic> userData = {
+          'name': name,
+          'email': email,
+          'timestamp':
+              FieldValue.serverTimestamp(), // Para registrar a hora atual
+        };
+
+        // Acesse a coleção 'users' e crie um novo documento com o ID do usuário
+        // vamos criar outra coleção dentro dessa de user que vai ter email e nome
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .set(userData);
+
+        setState(() {
+          _status = "Sucesso! E-mail: $email, Nome: $name";
+        });
+      } else {
+        setState(() {
+          _status = "Erro: Usuário não criado.";
+        });
+      }
+    } catch (error) {
       setState(() {
-        _status = "Sucesso! email: ${firebaseUser.user!.email}";
+        _status = "Erro no create: $error";
       });
-    }).catchError((erro) {
-      setState(() {
-        _status = "Erro no create: " + erro.toString();
-      });
-    });
+    }
   }
 
   @override
@@ -58,6 +85,28 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Column(
                   children: [
                     Padding(
+                      // name
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: _name,
+                        validator: (text) {
+                          if (text == null || text.isEmpty) {
+                            return 'Nome está vazio';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.name,
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.person),
+                          border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          labelText: 'Nome',
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      // email
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: _email,
@@ -78,6 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     Padding(
+                      // senha
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: _password,
@@ -99,6 +149,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     Padding(
+                      // confirmar senha
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: _confirmPassword,
