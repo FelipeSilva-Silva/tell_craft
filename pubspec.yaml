@@ -7,6 +7,7 @@ environment:
   sdk: '>=3.1.0-163.1.beta <4.0.0'
 
 dependencies:
+  cloud_firestore: ^4.9.1
   firebase_core: ^2.15.1
   flutter:
     sdk: flutter
@@ -48,7 +49,6 @@ dev_dependencies:
   google_sign_in: ^6.1.5
 
   # https://pub.dev/packages/cloud_firestore
-  cloud_firestore: ^4.9.1
 
   # https://pub.dev/packages/firebase_storage
   firebase_storage: ^11.2.6

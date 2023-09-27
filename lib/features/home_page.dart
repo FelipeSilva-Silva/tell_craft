@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tell_craft/components/slide_carousel.dart';
 import 'package:tell_craft/features/text_generator/text_generator_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -8,16 +10,6 @@ class Home extends StatefulWidget {
   @override
   State<Home> createState() => _HomeState();
 }
-
-// pegar da api depois
-final List<String> _recentStories = [
-  'História 1',
-  'História 2',
-  'História 3',
-  'História 4',
-  'História 5',
-  'Historia 6'
-];
 
 class _HomeState extends State<Home> {
   final List<String> _listImages = [
@@ -33,6 +25,32 @@ class _HomeState extends State<Home> {
   ];
 
   final int indexImages = 0;
+
+  final auth = FirebaseAuth.instance;
+  final CollectionReference reviewsCollection =
+      FirebaseFirestore.instance.collection('users');
+
+  Future<List<QueryDocumentSnapshot<Object?>>?> _getUserStories() async {
+    final user = auth.currentUser;
+    if (user != null) {
+      final userEmail = user
+          .email; // Obtenha o e-mail do usuário pq tá salvando o email em user
+      final querySnapshot = await reviewsCollection
+          .where('email',
+              isEqualTo:
+                  userEmail) // Consulta para encontrar o documento do usuário pelo e-mail
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        final userId = querySnapshot.docs.first.id;
+        final storiesSnapshot =
+            await reviewsCollection.doc(userId).collection('stories').get();
+        return storiesSnapshot.docs;
+      }
+    }
+    // O usuário não está autenticado ou não possui histórias, retorne uma lista vazia
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,18 +68,18 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: InkWell(
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => TextGenerator(
-                    text: _listTexts[indexImages],
-                  )));
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              SizedBox(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => TextGenerator(
+                          text: _listTexts[indexImages],
+                        )));
+              },
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height / 4,
                 child: PageView.builder(
                   itemCount: _listImages.length,
@@ -72,44 +90,80 @@ class _HomeState extends State<Home> {
                   },
                 ),
               ),
-              const SizedBox(height: 20),
-              const Row(
-                children: [
-                  Icon(Icons.history),
-                  SizedBox(width: 5),
-                  Text("Suas Histórias"),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Expanded(
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 5,
-                    crossAxisSpacing: 10,
-                  ),
-                  itemCount: _recentStories.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 5),
-                      child: Container(
-                        color: const Color(0xFF24262E),
-                        height:
-                            50, // arranjar um jeito pra diminuir o tamanho do quadrado
-                        child: Center(
-                          child: Text(
-                            _recentStories[index],
-                            style: const TextStyle(color: Colors.white),
-                          ),
+            ),
+            const SizedBox(height: 20),
+            const Row(
+              children: [
+                Icon(Icons.history),
+                SizedBox(width: 5),
+                Text(
+                  "Suas Histórias",
+                  style: TextStyle(fontSize: 18),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: Scaffold(
+                body: FutureBuilder(
+                  future:
+                      _getUserStories(), // Use a função para buscar as histórias do usuário
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Erro: ${snapshot.error}'),
+                      );
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(
+                        child: Text(
+                          'Nenhuma história encontrada.',
+                          style: TextStyle(fontSize: 16),
                         ),
-                      ),
-                    );
+                      );
+                    } else {
+                      // Se houver avaliações, mostre a lista
+                      List<QueryDocumentSnapshot<Object?>> stories =
+                          snapshot.data as List<QueryDocumentSnapshot<Object?>>;
+                      return GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2, // Duas colunas
+                        ),
+                        itemCount: stories.length,
+                        itemBuilder: (context, index) {
+                          var story =
+                              stories[index].data() as Map<String, dynamic>;
+                          return InkWell(
+                            onTap: () {
+                              // tocar na história => abrir historia
+                            },
+                            child: Card(
+                              margin: const EdgeInsets.all(
+                                  8.0), // Espaçamento ao redor do Card
+                              elevation:
+                                  4.0, // Elevação para dar uma sombra ao Card
+                              child: ListTile(
+                                title: Text(
+                                  story[
+                                      'title'], // Substitua 'title' pelo campo apropriado que armazena o título da história
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }
                   },
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

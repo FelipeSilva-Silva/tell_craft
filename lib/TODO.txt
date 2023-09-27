@@ -1,0 +1,3 @@
+// acertar o indice de cada coisa do carrousel (um texto diferente para cada coisa do carrousel)
+// fazer texto e digitar
+// salvar o email na coleção

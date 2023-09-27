@@ -139,13 +139,13 @@ class _LoginPageState extends State<LoginPage> {
                     child: ElevatedButton(
                       onPressed: () {
                         //tirar para deixar o login prestando
-                        // if (_formKey.currentState!.validate()) {
-                        //   _onClickEmailLogin();
-                        // }
+                        if (_formKey.currentState!.validate()) {
+                          _onClickEmailLogin();
+                        }
 
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => const Home(),
-                        ));
+                        //Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        //builder: (context) => const Home(),
+                        // ));
                       },
                       style: ButtonStyle(
                           backgroundColor:
