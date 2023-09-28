@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tell_craft/components/slide_carousel.dart';
+import 'package:tell_craft/features/setting/setting_page.dart';
 import 'package:tell_craft/features/text_generator/text_generator_page.dart';
+// ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Home extends StatefulWidget {
@@ -60,7 +62,13 @@ class _HomeState extends State<Home> {
         title: Image.asset('assets/images/logoTitle.png'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SettingPage(),
+                  ));
+            },
             icon: const Icon(
               Icons.person_outline_sharp,
               size: 30,

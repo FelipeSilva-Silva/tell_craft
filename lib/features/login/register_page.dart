@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tell_craft/features/login/login_page.dart';
+// ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:validatorless/validatorless.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -89,12 +91,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: _name,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'Nome está vazio';
-                          }
-                          return null;
-                        },
+                        validator: Validatorless.multiple(
+                          [
+                            Validatorless.required('Nome é Obrigatório'),
+                          ],
+                        ),
                         keyboardType: TextInputType.name,
                         decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.person),
@@ -110,12 +111,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: _email,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'Email está vazio';
-                          }
-                          return null;
-                        },
+                        validator: Validatorless.multiple([
+                          Validatorless.email('Não é um email Valido'),
+                          Validatorless.required('E-mail é obrigaório'),
+                        ]),
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.email),
@@ -131,12 +130,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: _password,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'Senha está vazia';
-                          }
-                          return null;
-                        },
+                        validator: Validatorless.multiple([
+                          Validatorless.required('Senha é obrigatório'),
+                          Validatorless.compare(
+                              _confirmPassword, 'A senhas diferentes'),
+                        ]),
                         obscureText: true,
                         keyboardType: TextInputType.visiblePassword,
                         decoration: const InputDecoration(
@@ -153,15 +151,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: _confirmPassword,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'Confirmar senha está vazio';
-                          }
-                          if (_password.text != _confirmPassword.text) {
-                            return 'Confirmar senha está diferente de senha';
-                          }
-                          return null;
-                        },
+                        validator: Validatorless.multiple([
+                          Validatorless.required('Senha é obrigatório'),
+                          Validatorless.compare(
+                              _password, 'A senhas diferentes'),
+                        ]),
                         obscureText: true,
                         keyboardType: TextInputType.visiblePassword,
                         decoration: const InputDecoration(
