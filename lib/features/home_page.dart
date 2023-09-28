@@ -1,12 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tell_craft/components/slide_carousel.dart';
-<<<<<<< HEAD
 import 'package:tell_craft/features/text_generator/chat_page.dart';
-=======
 import 'package:tell_craft/features/generator_new_history.dart';
 import 'package:tell_craft/features/setting/setting_page.dart';
->>>>>>> c3f54a7c69b250117e388e2de4b7324e7cae6ff1
 import 'package:tell_craft/features/text_generator/text_generator_page.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
