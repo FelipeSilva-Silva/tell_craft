@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:tell_craft/components/chat_widget.dart';
 
 class ChatPage extends StatefulWidget {
   final String text;
@@ -50,7 +51,7 @@ class _ChatPageState extends State<ChatPage> {
                 child: ListView.builder(
                     itemCount: 6,
                     itemBuilder: (context, index) {
-                      return const Text("Hello this is a text");
+                      return const ChatWidget();
                     }),
               ),
               if (_isTyping) ...[
