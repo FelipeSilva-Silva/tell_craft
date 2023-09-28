@@ -14,7 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "959962573771-o7d7e7pef4pif8ndq7ig7lsidv7que6i.apps.googleusercontent.com",
+          "client_id": "959962573771-hthi0cjhc8djsu3kc9kvibi24g4a26t6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +27,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "959962573771-o7d7e7pef4pif8ndq7ig7lsidv7que6i.apps.googleusercontent.com",
+              "client_id": "959962573771-hthi0cjhc8djsu3kc9kvibi24g4a26t6.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "959962573771-5jp7r0a5sdghloufg2arpas73g7bkqbc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tellCraft.RunnerTests"
+              }
             }
           ]
         }
