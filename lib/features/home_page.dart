@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tell_craft/components/slide_carousel.dart';
+import 'package:tell_craft/features/text_generator/chat_page.dart';
 import 'package:tell_craft/features/text_generator/text_generator_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -139,7 +140,7 @@ class _HomeState extends State<Home> {
                           return InkWell(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => TextGenerator(
+                                  builder: (context) => ChatPage(
                                         text: _listTexts[indexImages],
                                         title: story['title'],
                                       )));
