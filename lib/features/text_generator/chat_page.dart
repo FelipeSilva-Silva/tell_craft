@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:tell_craft/models/chat_model.dart';
 import 'package:tell_craft/services/text_api/api_service.dart';
 import 'package:tell_craft/widgets/chat_widget.dart';
+import 'package:tell_craft/widgets/text_widget.dart';
 
 class ChatPage extends StatefulWidget {
   final String text;
@@ -120,19 +121,65 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> sendMessageFCT() async {
+    if (_isTyping) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: TextWidget(
+            label: "Espere sua resposta para digitar outra pergunta",
+            fontSize: 15,
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+    if (textEditingController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: TextWidget(
+            label: "Por favor, digite algo",
+            fontSize: 15,
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+    if (textEditingController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: TextWidget(
+            label: "Por favor, digite algo",
+            fontSize: 15,
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
     try {
+      String msg = textEditingController.text;
       setState(() {
         _isTyping = true;
-        chatList.add(ChatModel(msg: textEditingController.text, chatIndex: 0));
+        chatList.add(ChatModel(msg: msg, chatIndex: 0));
         textEditingController.clear();
         focusNode.unfocus();
       });
       chatList.addAll(await ApiService.sendMessage(
           // salvar esse lista no firebase?
-          message: textEditingController.text));
+          message: msg));
       setState(() {});
     } catch (error) {
       log("error $error");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: TextWidget(
+            label: error.toString(),
+            fontSize: 15,
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
     } finally {
       setState(() {
         scrollListToEnd();
