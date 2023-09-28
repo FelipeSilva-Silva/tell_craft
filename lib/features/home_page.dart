@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tell_craft/components/slide_carousel.dart';
+import 'package:tell_craft/features/generator_new_history.dart';
 import 'package:tell_craft/features/setting/setting_page.dart';
 import 'package:tell_craft/features/text_generator/text_generator_page.dart';
 // ignore: depend_on_referenced_packages
@@ -178,6 +179,16 @@ class _HomeState extends State<Home> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const GeneratorHistoryPage(),
+              ));
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }

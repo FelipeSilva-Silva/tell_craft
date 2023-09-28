@@ -1,7 +1,8 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tell_craft/features/login/login_page.dart';
-// ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -65,6 +66,16 @@ class _RegisterPageState extends State<RegisterPage> {
         _status = "Erro no create: $error";
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _name.dispose();
+    _email.dispose();
+    _password.dispose();
+    _confirmPassword.dispose();
+
+    super.dispose();
   }
 
   @override

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tell_craft/controller/controller_login.dart';
 import 'package:tell_craft/features/login/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tell_craft/firebase/firebase_options.dart';
@@ -13,7 +15,15 @@ void main() async {
   );
 
   HttpOverrides.global = MyHttpOverrides();
-  runApp(const MyApp());
+
+  runApp(MultiProvider(
+    providers: [
+      Provider(
+        create: (context) => ControllerLogin(),
+      )
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyHttpOverrides extends HttpOverrides {
