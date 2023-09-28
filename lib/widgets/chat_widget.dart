@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tell_craft/widgets/text_widget.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class ChatWidget extends StatelessWidget {
   const ChatWidget({super.key, required this.msg, required this.chatIndex});
@@ -27,8 +28,24 @@ class ChatWidget extends StatelessWidget {
                   width: 8,
                 ),
                 Expanded(
-                  // msg com index
-                  child: TextWidget(label: msg, fontSize: 15),
+                  child: chatIndex == 0
+                      ? TextWidget(label: msg, fontSize: 16)
+                      : DefaultTextStyle(
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                          ),
+                          child: AnimatedTextKit(
+                            isRepeatingAnimation: false,
+                            repeatForever: false,
+                            displayFullTextOnTap: true,
+                            totalRepeatCount: 1,
+                            animatedTexts: [
+                              TyperAnimatedText(msg.trim()),
+                            ],
+                          ),
+                        ),
                 ),
               ],
             ),

@@ -1,3 +1,3 @@
-// acertar o indice de cada coisa do carrousel (um texto diferente para cada coisa do carrousel)
+// acertar o indice de cada coisa do carrousel (um texto diferente para cada coisa do carrousel) => tirar clique dele 
 // fazer texto e digitar
-// salvar o email na coleção
+// tela de ajuda com icon button (poder ser ate um pop up => olhar no do cinema)
