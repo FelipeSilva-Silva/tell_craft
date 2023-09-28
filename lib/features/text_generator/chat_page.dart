@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:tell_craft/components/chat_widget.dart';
+import 'package:tell_craft/widgets/chat_widget.dart';
 
 class ChatPage extends StatefulWidget {
   final String text;
@@ -10,6 +10,34 @@ class ChatPage extends StatefulWidget {
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
+
+final chatMsg = [
+  {
+    "msg": "hello how",
+    "chatIndex": 0,
+  },
+  {
+    "msg": "tudo benne",
+    "chatIndex": 1,
+  },
+  {
+    "msg": "hello how aaaaaa",
+    "chatIndex": 0,
+  },
+  {
+    "msg": "tudo benneeeeeee",
+    "chatIndex": 1,
+  },
+  {
+    "msg": "hello how are you",
+    "chatIndex": 0,
+  },
+  {
+    "msg":
+        "Excepteur eiusmod quis proident exercitation fugiat aliqua incididunt elit enim. Proident ullamco qui ullamco labore laborum fugiat exercitation aliquip. Veniam fugiat excepteur fugiat minim ipsum do consequat commodo eu irure elit magna cupidatat magna. Id veniam qui incididunt elit amet. Occaecat nulla quis excepteur eu esse sit qui. Ipsum labore magna nisi excepteur culpa Lorem do Occaecat eiusmod officia sint cupidatat. Velit dolor minim in quis mollit mollit ipsum officia. Ad non ea cupidatat consequat est.",
+    "chatIndex": 1,
+  },
+];
 
 class _ChatPageState extends State<ChatPage> {
   final bool _isTyping = true;
@@ -51,7 +79,11 @@ class _ChatPageState extends State<ChatPage> {
                 child: ListView.builder(
                     itemCount: 6,
                     itemBuilder: (context, index) {
-                      return const ChatWidget();
+                      return ChatWidget(
+                        msg: chatMsg[index]["msg"].toString(),
+                        chatIndex:
+                            int.parse(chatMsg[index]["chatIndex"].toString()),
+                      );
                     }),
               ),
               if (_isTyping) ...[
