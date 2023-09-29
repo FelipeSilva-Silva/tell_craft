@@ -92,7 +92,11 @@ class _GeneratorHistoryPageState extends State<GeneratorHistoryPage> {
                       height: 50,
                       width: 200,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          String storie = returnStorie(_quantityCharacters.text,
+                              _namescharacters.text, _theme.text, _local.text);
+                          // passar pra tela do chat
+                        },
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStatePropertyAll(Colors.amber[600])),
@@ -113,5 +117,12 @@ class _GeneratorHistoryPageState extends State<GeneratorHistoryPage> {
         ),
       ),
     );
+  }
+
+  String returnStorie(String quantityPersonagens, String nomePersonagens,
+      String tema, String local) {
+    String storie =
+        "Conte uma historia que contem $quantityPersonagens personagens, chamados $nomePersonagens, sobre o tema $tema em um local chamado $local";
+    return storie;
   }
 }
