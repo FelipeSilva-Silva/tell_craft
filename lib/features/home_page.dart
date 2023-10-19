@@ -147,7 +147,6 @@ class _HomeState extends State<Home> {
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => ChatPage(
-                                        text: _listTexts[indexImages],
                                         title: story['title'],
                                       )));
                             },

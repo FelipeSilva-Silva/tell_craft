@@ -18,9 +18,10 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart'; // Importe a bibli
 import 'package:share/share.dart';
 
 class ChatPage extends StatefulWidget {
-  final String text;
   final String title;
-  const ChatPage({super.key, required this.text, required this.title});
+  final String? textFromCreateButton; // Altere o tipo para String
+
+  const ChatPage({super.key, required this.title, this.textFromCreateButton});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -38,6 +39,9 @@ class _ChatPageState extends State<ChatPage> {
     textEditingController = TextEditingController();
     focusNode = FocusNode();
     super.initState();
+    textEditingController =
+        TextEditingController(text: widget.textFromCreateButton);
+    sendMessageFCT();
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tell_craft/features/text_generator/chat_page.dart';
 import 'package:validatorless/validatorless.dart';
 
 class GeneratorHistoryPage extends StatefulWidget {
@@ -95,6 +96,12 @@ class _GeneratorHistoryPageState extends State<GeneratorHistoryPage> {
                         onPressed: () {
                           String storie = returnStorie(_quantityCharacters.text,
                               _namescharacters.text, _theme.text, _local.text);
+                          String tema = _theme.text;
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ChatPage(
+                                    title: "Historia de $tema",
+                                    textFromCreateButton: storie,
+                                  )));
                           // passar pra tela do chat
                         },
                         style: ButtonStyle(
