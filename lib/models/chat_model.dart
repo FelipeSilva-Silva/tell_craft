@@ -8,4 +8,11 @@ class ChatModel {
         msg: json["msg"],
         chatIndex: json["chatIndex"],
       );
+
+  Map<String, dynamic> toMap() {
+    return {
+      'msg': msg,
+      'chatIndex': chatIndex,
+    };
+  }
 }

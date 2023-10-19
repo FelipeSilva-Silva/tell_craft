@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:tell_craft/components/pdf_viewer.dart';
+import 'package:tell_craft/controller/controller_save_story.dart';
 import 'package:tell_craft/models/chat_model.dart';
 import 'package:tell_craft/services/text_api/api_service.dart';
 import 'package:tell_craft/widgets/chat_widget.dart';
@@ -16,6 +17,9 @@ import 'package:pdf/widgets.dart' as pdfWidgets;
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart'; // Importe a biblioteca de visualização de PDF
 import 'package:share/share.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tell_craft/models/chat_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatPage extends StatefulWidget {
   final String title;
@@ -32,6 +36,8 @@ class _ChatPageState extends State<ChatPage> {
   late TextEditingController textEditingController;
   late FocusNode focusNode;
   late ScrollController _listScrollController;
+
+  final controllerSaveStory = ControllerSaveStory();
 
   @override
   void initState() {
@@ -70,12 +76,31 @@ class _ChatPageState extends State<ChatPage> {
     return Uint8List.fromList(await pdf.save());
   }
 
+  saveList(List<ChatModel> items) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      print(user!.uid);
+      print(user!.email);
+
+      List<Map<String, dynamic>> listData =
+          items.map((item) => item.toMap()).toList();
+
+      await FirebaseFirestore.instance
+          .collection('story')
+          .doc(user!.uid)
+          .set({"story": listData});
+    } catch (e) {
+      print('Erro ao salvar a lista: $e');
+    }
+  }
+
   void addImageToPDF(String imagePath) {
     // Implemente a função para adicionar imagens ao PDF, se necessário
   }
 
   @override
   Widget build(BuildContext context) {
+    saveList(chatList);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
@@ -184,18 +209,6 @@ class _ChatPageState extends State<ChatPage> {
         const SnackBar(
           content: TextWidget(
             label: "Espere sua resposta para digitar outra pergunta",
-            fontSize: 15,
-          ),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-    if (textEditingController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: TextWidget(
-            label: "Por favor, digite algo",
             fontSize: 15,
           ),
           backgroundColor: Colors.red,

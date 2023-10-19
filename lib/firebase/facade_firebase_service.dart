@@ -54,10 +54,8 @@ class FacadeFirebaseService {
   }
 
   Future<User> getUser() async {
-    final User? fbUser = await _fbAuth.currentUser;
-    String uid = fbUser!.uid;
-    print("uid = " + uid);
+    final User? fbUser = _fbAuth.currentUser;
 
-    return fbUser;
+    return fbUser!;
   }
 }

@@ -4,7 +4,6 @@ import 'package:tell_craft/components/slide_carousel.dart';
 import 'package:tell_craft/features/text_generator/chat_page.dart';
 import 'package:tell_craft/features/generator_new_history.dart';
 import 'package:tell_craft/features/setting/setting_page.dart';
-import 'package:tell_craft/features/text_generator/text_generator_page.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -151,14 +150,11 @@ class _HomeState extends State<Home> {
                                       )));
                             },
                             child: Card(
-                              margin: const EdgeInsets.all(
-                                  8.0), // Espaçamento ao redor do Card
-                              elevation:
-                                  4.0, // Elevação para dar uma sombra ao Card
+                              margin: const EdgeInsets.all(8.0),
+                              elevation: 4.0,
                               child: ListTile(
                                 title: Text(
-                                  story[
-                                      'title'], // Substitua 'title' pelo campo apropriado que armazena o título da história
+                                  story['title'],
                                   style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
