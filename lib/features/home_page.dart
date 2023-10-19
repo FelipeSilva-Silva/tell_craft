@@ -85,10 +85,7 @@ class _HomeState extends State<Home> {
             InkWell(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => TextGenerator(
-                          text: _listTexts[indexImages],
-                          title: 'Nova Historia',
-                        )));
+                    builder: (context) => GeneratorHistoryPage()));
               },
               child: SizedBox(
                 height: MediaQuery.of(context).size.height / 4,

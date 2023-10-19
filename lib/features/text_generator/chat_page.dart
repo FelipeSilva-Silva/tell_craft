@@ -1,11 +1,21 @@
 import 'dart:developer';
 
+import 'dart:developer';
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:tell_craft/components/pdf_viewer.dart';
 import 'package:tell_craft/models/chat_model.dart';
 import 'package:tell_craft/services/text_api/api_service.dart';
 import 'package:tell_craft/widgets/chat_widget.dart';
 import 'package:tell_craft/widgets/text_widget.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pdfWidgets;
+import 'package:path_provider/path_provider.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart'; // Importe a biblioteca de visualização de PDF
+import 'package:share/share.dart';
 
 class ChatPage extends StatefulWidget {
   final String text;
@@ -40,18 +50,62 @@ class _ChatPageState extends State<ChatPage> {
 
   List<ChatModel> chatList = [];
 
+  Future<Uint8List> createPDF(List<ChatModel> chatList) async {
+    final pdf = pdfWidgets.Document();
+
+    for (var chat in chatList) {
+      pdf.addPage(pdfWidgets.Page(
+        build: (pdfWidgets.Context context) {
+          return pdfWidgets.Center(
+            child: pdfWidgets.Text(chat.msg),
+          );
+        },
+      ));
+    }
+
+    return Uint8List.fromList(await pdf.save());
+  }
+
+  void addImageToPDF(String imagePath) {
+    // Implemente a função para adicionar imagens ao PDF, se necessário
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
-          //title: Image.asset('assets/images/logoTitle.png'),
           title: Text(widget.title),
           actions: [
             IconButton(
-              onPressed: () {}, // pode colocar o titulo da historia aqui
+              onPressed: () {},
               icon: const Icon(
                 Icons.person_outline_sharp,
+                size: 30,
+              ),
+            ),
+            IconButton(
+              onPressed: () async {
+                try {
+                  final pdfBytes = await createPDF(chatList);
+                  final directory = await getApplicationDocumentsDirectory();
+                  final pdfPath = '${directory.path}/generated_text.pdf';
+                  final pdfFile = File(pdfPath);
+                  await pdfFile.writeAsBytes(pdfBytes);
+
+                  // Navegue para a tela de visualização do PDF
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PdfViewerPage(pdfFile: pdfFile),
+                    ),
+                  );
+                } catch (e) {
+                  print("error $e");
+                }
+              },
+              icon: const Icon(
+                Icons.picture_as_pdf,
                 size: 30,
               ),
             ),

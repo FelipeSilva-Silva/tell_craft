@@ -12,7 +12,7 @@ class ApiService {
         Uri.parse("https://api.openai.com/v1/completions"),
         headers: {
           'Authorization':
-              'Bearer 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',
+              'Bearer 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',
           "Content-Type":
               "application/json; charset=ISO-8859-1", // Especifica a codificação aqui
         },
