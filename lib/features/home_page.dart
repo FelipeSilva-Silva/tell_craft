@@ -144,10 +144,10 @@ class _HomeState extends State<Home> {
                               stories[index].data() as Map<String, dynamic>;
                           return InkWell(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ChatPage(
-                                        title: story['title'],
-                                      )));
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (context) => ChatPage(
+                              //           title: story['title'],
+                              //         )));
                             },
                             child: Card(
                               margin: const EdgeInsets.all(8.0),

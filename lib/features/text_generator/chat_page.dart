@@ -23,9 +23,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatPage extends StatefulWidget {
   final String title;
-  final String? textFromCreateButton; // Altere o tipo para String
+  final String? textFromCreateButton;
+  final String id;
+  // Altere o tipo para String
 
-  const ChatPage({super.key, required this.title, this.textFromCreateButton});
+  const ChatPage(
+      {super.key,
+      required this.title,
+      this.textFromCreateButton,
+      required this.id});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -76,31 +82,13 @@ class _ChatPageState extends State<ChatPage> {
     return Uint8List.fromList(await pdf.save());
   }
 
-  saveList(List<ChatModel> items) async {
-    try {
-      User? user = FirebaseAuth.instance.currentUser;
-      print(user!.uid);
-      print(user!.email);
-
-      List<Map<String, dynamic>> listData =
-          items.map((item) => item.toMap()).toList();
-
-      await FirebaseFirestore.instance
-          .collection('story')
-          .doc(user!.uid)
-          .set({"story": listData});
-    } catch (e) {
-      print('Erro ao salvar a lista: $e');
-    }
-  }
-
   void addImageToPDF(String imagePath) {
     // Implemente a função para adicionar imagens ao PDF, se necessário
   }
 
   @override
   Widget build(BuildContext context) {
-    saveList(chatList);
+    controllerSaveStory.saveList(chatList, widget.title, widget.id);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,

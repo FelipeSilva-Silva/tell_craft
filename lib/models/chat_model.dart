@@ -1,3 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tell_craft/models/chat_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 class ChatModel {
   final String msg;
   final int chatIndex;
@@ -10,9 +14,7 @@ class ChatModel {
       );
 
   Map<String, dynamic> toMap() {
-    return {
-      'msg': msg,
-      'chatIndex': chatIndex,
-    };
+    User? user = FirebaseAuth.instance.currentUser;
+    return {'msg': msg, 'chatIndex': chatIndex, 'email': user!.email};
   }
 }

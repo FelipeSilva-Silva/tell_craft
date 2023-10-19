@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tell_craft/features/text_generator/chat_page.dart';
 import 'package:validatorless/validatorless.dart';
+import 'package:uuid/uuid.dart';
 
 class GeneratorHistoryPage extends StatefulWidget {
   const GeneratorHistoryPage({super.key});
@@ -14,6 +15,7 @@ class _GeneratorHistoryPageState extends State<GeneratorHistoryPage> {
   final _namescharacters = TextEditingController();
   final _theme = TextEditingController();
   final _local = TextEditingController();
+  var uuid = Uuid();
 
   @override
   void dispose() {
@@ -99,9 +101,9 @@ class _GeneratorHistoryPageState extends State<GeneratorHistoryPage> {
                           String tema = _theme.text;
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => ChatPage(
-                                    title: "Historia de $tema",
-                                    textFromCreateButton: storie,
-                                  )));
+                                  title: "Historia de $tema",
+                                  textFromCreateButton: storie,
+                                  id: uuid.v1())));
                           // passar pra tela do chat
                         },
                         style: ButtonStyle(
