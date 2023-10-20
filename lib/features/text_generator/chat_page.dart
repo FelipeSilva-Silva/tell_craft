@@ -8,6 +8,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:tell_craft/components/pdf_viewer.dart';
 import 'package:tell_craft/controller/controller_save_story.dart';
 import 'package:tell_craft/models/chat_model.dart';
+import 'package:tell_craft/services/image_api/api_service_image.dart';
 import 'package:tell_craft/services/text_api/api_service.dart';
 import 'package:tell_craft/widgets/chat_widget.dart';
 import 'package:tell_craft/widgets/text_widget.dart';
@@ -20,6 +21,7 @@ import 'package:share/share.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tell_craft/models/chat_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 
 class ChatPage extends StatefulWidget {
   final String title;
@@ -44,6 +46,8 @@ class _ChatPageState extends State<ChatPage> {
   late ScrollController _listScrollController;
 
   final controllerSaveStory = ControllerSaveStory();
+  var pdf = pdfWidgets.Document();
+  bool addingImage = false; // variável de controle
 
   @override
   void initState() {
@@ -53,6 +57,7 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
     textEditingController =
         TextEditingController(text: widget.textFromCreateButton);
+    pdf = pdfWidgets.Document(); // Crie o PDF no initState
     sendMessageFCT();
   }
 
@@ -67,8 +72,6 @@ class _ChatPageState extends State<ChatPage> {
   List<ChatModel> chatList = [];
 
   Future<Uint8List> createPDF(List<ChatModel> chatList) async {
-    final pdf = pdfWidgets.Document();
-
     for (var chat in chatList) {
       pdf.addPage(pdfWidgets.Page(
         build: (pdfWidgets.Context context) {
@@ -80,10 +83,6 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     return Uint8List.fromList(await pdf.save());
-  }
-
-  void addImageToPDF(String imagePath) {
-    // Implemente a função para adicionar imagens ao PDF, se necessário
   }
 
   @override
@@ -175,6 +174,20 @@ class _ChatPageState extends State<ChatPage> {
                         Icons.send,
                         color: Colors.white,
                       ),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        final imageUrl = await generateImageFromText(
+                            textEditingController
+                                .text); // Espere a URL da imagem
+
+                        addImageToPDF(imageUrl);
+                        textEditingController.clear();
+                      },
+                      icon: const Icon(
+                        Icons.add_photo_alternate,
+                        color: Colors.white,
+                      ),
                     )
                   ],
                 ),
@@ -244,6 +257,64 @@ class _ChatPageState extends State<ChatPage> {
         scrollListToEnd();
         _isTyping = false;
       });
+    }
+  }
+
+  Future<String> generateImageFromText(String text) async {
+    try {
+      final imageUrl = await ApiServiceImage.createImage(
+          message: textEditingController.text);
+      print(imageUrl);
+
+      return imageUrl;
+    } catch (error) {
+      log("Error while generating image: $error");
+      throw error;
+    }
+  }
+
+  Future<void> savePDF(pdfWidgets.Document pdf) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final pdfPath = '${directory.path}/generated_text_with_image.pdf';
+    final pdfFile = File(pdfPath);
+    await pdfFile.writeAsBytes(Uint8List.fromList(await pdf.save()));
+
+    // Navegue para a tela de visualização do PDF
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PdfViewerPage(pdfFile: pdfFile),
+      ),
+    );
+  }
+
+  Future<void> addImageToPDF(String imageUrl) async {
+    if (imageUrl.isNotEmpty) {
+      // Obtenha o diretório temporário
+      final tempDir = await getTemporaryDirectory();
+
+      // Abra uma conexão HTTP para baixar a imagem
+      final imageResponse = await http.get(Uri.parse(imageUrl));
+
+      if (imageResponse.statusCode == 200) {
+        final imageFilePath = '${tempDir.path}/image.png';
+
+        final imageFile = File(imageFilePath);
+        await imageFile.writeAsBytes(imageResponse.bodyBytes);
+
+        final image = pdfWidgets.MemoryImage(imageFile.readAsBytesSync());
+
+        // Adicione a imagem ao PDF existente
+        pdf.addPage(pdfWidgets.Page(
+          build: (pdfWidgets.Context context) {
+            return pdfWidgets.Center(
+              child: pdfWidgets.Image(image),
+            );
+          },
+        ));
+
+        setState(() {});
+      }
     }
   }
 }

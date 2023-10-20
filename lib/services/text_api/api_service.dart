@@ -11,8 +11,7 @@ class ApiService {
       var response = await http.post(
         Uri.parse("https://api.openai.com/v1/completions"),
         headers: {
-          'Authorization':
-              'Bearer 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',
+          'Authorization': 'Bearer /////////////////////////////',
           "Content-Type":
               "application/json; charset=ISO-8859-1", // Especifica a codificação aqui
         },
