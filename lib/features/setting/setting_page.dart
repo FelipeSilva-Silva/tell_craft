@@ -1,9 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tell_craft/features/login/login_page.dart';
 import 'package:validatorless/validatorless.dart';
+// ignore: depend_on_referenced_packages
+import 'package:firebase_auth/firebase_auth.dart';
 
-class SettingPage extends StatelessWidget {
+class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
 
+  @override
+  State<SettingPage> createState() => _SettingPageState();
+}
+
+class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     final name = TextEditingController();
@@ -60,7 +69,13 @@ class SettingPage extends StatelessWidget {
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStatePropertyAll(Colors.red[700])),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginPage(),
+                        ));
+                  },
                   child: const Text('Sair'),
                 ),
               ],

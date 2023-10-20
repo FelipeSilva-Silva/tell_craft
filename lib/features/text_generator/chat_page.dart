@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
@@ -12,15 +11,8 @@ import 'package:tell_craft/services/image_api/api_service_image.dart';
 import 'package:tell_craft/services/text_api/api_service.dart';
 import 'package:tell_craft/widgets/chat_widget.dart';
 import 'package:tell_craft/widgets/text_widget.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pdfWidgets;
 import 'package:path_provider/path_provider.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart'; // Importe a biblioteca de visualização de PDF
-import 'package:share/share.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tell_craft/models/chat_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 class ChatPage extends StatefulWidget {
@@ -98,13 +90,6 @@ class _ChatPageState extends State<ChatPage> {
           backgroundColor: Colors.black,
           title: Text(widget.title),
           actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.person_outline_sharp,
-                size: 30,
-              ),
-            ),
             IconButton(
               onPressed: () async {
                 try {
@@ -235,8 +220,13 @@ class _ChatPageState extends State<ChatPage> {
       return;
     }
     try {
-      String msg = chatList.last.msg;
-      msg = "$msg\n\n${textEditingController.text}";
+      String msg = "";
+      if (chatList.isNotEmpty) {
+        msg = chatList.last.msg;
+        msg = "$msg\n\n${textEditingController.text}";
+      } else {
+        msg = textEditingController.text;
+      }
 
       setState(() {
         _isTyping = true;
