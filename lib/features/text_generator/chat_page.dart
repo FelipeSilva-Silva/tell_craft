@@ -235,16 +235,16 @@ class _ChatPageState extends State<ChatPage> {
       return;
     }
     try {
-      String msg = textEditingController.text;
+      String msg = chatList.last.msg;
+      msg = "$msg\n\n${textEditingController.text}";
+
       setState(() {
         _isTyping = true;
         chatList.add(ChatModel(msg: msg, chatIndex: 0));
         textEditingController.clear();
         focusNode.unfocus();
       });
-      chatList.addAll(await ApiService.sendMessage(
-          // salvar esse lista no firebase?
-          message: msg));
+      chatList.addAll(await ApiService.sendMessage(message: msg));
       setState(() {});
     } catch (error) {
       log("error $error");

@@ -182,13 +182,13 @@ class _HomeState extends State<Home> {
                                 setState(() {});
                               });
                             },
-                            child: const Card(
-                              margin: EdgeInsets.all(8.0),
+                            child: Card(
+                              margin: const EdgeInsets.all(8.0),
                               elevation: 4.0,
                               child: ListTile(
                                 title: Text(
-                                  "Historia",
-                                  style: TextStyle(
+                                  "Historia ${index.toString()}",
+                                  style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
