@@ -171,12 +171,16 @@ class _HomeState extends State<Home> {
 
                           return InkWell(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ChatPage(
-                                        id: stories[index].id,
-                                        title: '',
-                                        chat: chatModelList,
-                                      )));
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (context) => ChatPage(
+                                            id: stories[index].id,
+                                            title: '',
+                                            chat: chatModelList,
+                                          )))
+                                  .then((value) {
+                                setState(() {});
+                              });
                             },
                             child: const Card(
                               margin: EdgeInsets.all(8.0),

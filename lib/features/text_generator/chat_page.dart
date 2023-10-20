@@ -27,13 +27,15 @@ class ChatPage extends StatefulWidget {
   final String title;
   final String? textFromCreateButton;
   final String id;
+  final List<ChatModel>? chat;
   // Altere o tipo para String
 
   const ChatPage(
       {super.key,
       required this.title,
       this.textFromCreateButton,
-      required this.id});
+      required this.id,
+      this.chat});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -87,6 +89,9 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.chat != null) {
+      chatList = widget.chat!;
+    }
     controllerSaveStory.saveList(chatList, widget.title, widget.id);
     return Scaffold(
         appBar: AppBar(
