@@ -6,6 +6,7 @@ import 'package:tell_craft/features/generator_new_history.dart';
 import 'package:tell_craft/features/setting/setting_page.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tell_craft/models/chat_model.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -21,37 +22,44 @@ class _HomeState extends State<Home> {
     'assets/images/Carousel3.png',
   ];
 
-  final List<String> _listTexts = [
-    'Embarque em uma fantasia',
-    'Embarque em uma distopia futurística',
-    'Embarque em uma odisseia no espaço',
-  ];
-
   final int indexImages = 0;
 
   final auth = FirebaseAuth.instance;
   final CollectionReference reviewsCollection =
-      FirebaseFirestore.instance.collection('users');
+      FirebaseFirestore.instance.collection('story');
 
   Future<List<QueryDocumentSnapshot<Object?>>?> _getUserStories() async {
-    final user = auth.currentUser;
-    if (user != null) {
-      final userEmail = user
-          .email; // Obtenha o e-mail do usuário pq tá salvando o email em user
-      final querySnapshot = await reviewsCollection
-          .where('email',
-              isEqualTo:
-                  userEmail) // Consulta para encontrar o documento do usuário pelo e-mail
-          .get();
+    List<QueryDocumentSnapshot<Object?>> matchingDocs = [];
 
-      if (querySnapshot.docs.isNotEmpty) {
-        final userId = querySnapshot.docs.first.id;
-        final storiesSnapshot =
-            await reviewsCollection.doc(userId).collection('stories').get();
-        return storiesSnapshot.docs;
+    try {
+      final user = auth.currentUser;
+      final userEmail = user!.email;
+
+      CollectionReference storyCollection =
+          FirebaseFirestore.instance.collection('story');
+
+      // Realize uma consulta para encontrar todos os documentos dentro da coleção "story"
+      QuerySnapshot querySnapshot = await storyCollection.get();
+
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        // Acesse a lista no subdocumento
+        dynamic data = doc.data();
+        List<dynamic> lista =
+            (data != null && data[doc.id] is List) ? data[doc.id] : [];
+
+        // Verifique cada item na lista para encontrar correspondências com o campo 'email'
+        for (var item in lista) {
+          if (item['email'] == userEmail) {
+            matchingDocs.add(doc);
+            break; // Se encontrar um email correspondente, pare de verificar este documento
+          }
+        }
       }
+
+      return matchingDocs;
+    } catch (e) {
+      print('Erro na consulta: $e');
     }
-    // O usuário não está autenticado ou não possui histórias, retorne uma lista vazia
     return null;
   }
 
@@ -84,7 +92,7 @@ class _HomeState extends State<Home> {
             InkWell(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => GeneratorHistoryPage()));
+                    builder: (context) => const GeneratorHistoryPage()));
               },
               child: SizedBox(
                 height: MediaQuery.of(context).size.height / 4,
@@ -117,7 +125,7 @@ class _HomeState extends State<Home> {
                       _getUserStories(), // Use a função para buscar as histórias do usuário
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Center(
                         child: Text('Erro: ${snapshot.error}'),
@@ -142,20 +150,41 @@ class _HomeState extends State<Home> {
                         itemBuilder: (context, index) {
                           var story =
                               stories[index].data() as Map<String, dynamic>;
+
+                          print(story.entries);
+
+                          List<ChatModel> chatModelList = [];
+
+                          story.forEach((id, chatList) {
+                            if (chatList is List) {
+                              chatList.forEach((chatData) {
+                                if (chatData is Map) {
+                                  Map<String, dynamic> chatDataCasted =
+                                      chatData.cast<String, dynamic>();
+                                  ChatModel chatModel =
+                                      ChatModel.fromJson(chatDataCasted);
+                                  chatModelList.add(chatModel);
+                                }
+                              });
+                            }
+                          });
+
                           return InkWell(
                             onTap: () {
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //     builder: (context) => ChatPage(
-                              //           title: story['title'],
-                              //         )));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ChatPage(
+                                        id: stories[index].id,
+                                        title: '',
+                                        chat: chatModelList,
+                                      )));
                             },
-                            child: Card(
-                              margin: const EdgeInsets.all(8.0),
+                            child: const Card(
+                              margin: EdgeInsets.all(8.0),
                               elevation: 4.0,
                               child: ListTile(
                                 title: Text(
-                                  story['title'],
-                                  style: const TextStyle(
+                                  "Historia",
+                                  style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),

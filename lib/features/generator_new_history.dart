@@ -15,7 +15,7 @@ class _GeneratorHistoryPageState extends State<GeneratorHistoryPage> {
   final _namescharacters = TextEditingController();
   final _theme = TextEditingController();
   final _local = TextEditingController();
-  var uuid = Uuid();
+  final uuid = const Uuid();
 
   @override
   void dispose() {

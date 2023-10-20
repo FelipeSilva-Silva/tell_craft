@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await _fbAuth.signInWithEmailAndPassword(email: email, password: pass);
       // Autenticação bem-sucedida, redirecione para a próxima tela (Home) se necessário
-      await Navigator.push(
+      await Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const Home()),
       );
