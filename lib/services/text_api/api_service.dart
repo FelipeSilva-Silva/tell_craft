@@ -6,21 +6,24 @@ import 'package:http/http.dart' as http;
 import 'package:tell_craft/models/chat_model.dart';
 
 class ApiService {
+  static http.Client httpClient = http.Client();
+
   static Future<List<ChatModel>> sendMessage({required String message}) async {
     try {
       var response = await http.post(
         Uri.parse("https://api.openai.com/v1/completions"),
         headers: {
-          'Authorization': 'Bearer /////////////////////////////',
+          'Authorization':
+              'Bearer sk-////////',
           "Content-Type":
               "application/json; charset=ISO-8859-1", // Especifica a codificação aqui
         },
         body: utf8.encode(jsonEncode(
           // Certifique-se de que a mensagem está codificada como UTF-8
           {
-            "model": "text-davinci-003",
+            "model": "gpt-3.5-turbo-instruct",
             "prompt": message,
-            "max_tokens": 200, // limite?
+            "max_tokens": 100, // limite?
           },
         )),
       );

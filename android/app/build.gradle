@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.tell_craft"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -66,5 +66,6 @@ flutter {
 }
 
 dependencies {
-    implementation 'com.android.support:multidex:1.0.3' // Use a versão mais recente
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.google.android.material:material:1.10.0'
 }

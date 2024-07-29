@@ -9,7 +9,7 @@ class ApiServiceImage {
       var response = await http.post(
         Uri.parse("https://api.openai.com/v1/images/generations"),
         headers: {
-          'Authorization': 'Bearer ///////////////////////////',
+          'Authorization': 'Bearer sk-///////////',
           "Content-Type": "application/json",
         },
         body: jsonEncode(

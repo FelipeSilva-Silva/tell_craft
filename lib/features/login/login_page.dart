@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:tell_craft/features/home_page.dart';
 import 'package:tell_craft/features/login/register_page.dart';
@@ -18,8 +20,36 @@ class _LoginPageState extends State<LoginPage> {
   final FirebaseAuth _fbAuth = FirebaseAuth.instance;
   late String _status = "";
 
+  int _loginAttempts = 0;
+  bool _isBlocked = false;
+
+  // Define um timer para desbloquear o usuário após 30 segundos
+  late Timer _blockTimer;
+
+  void _resetLoginAttempts() {
+    _loginAttempts = 0;
+    _isBlocked = false;
+  }
+
+  void _startBlockTimer() {
+    _blockTimer = Timer(const Duration(seconds: 30), () {
+      setState(() {
+        _resetLoginAttempts();
+      });
+    });
+  }
+
+  void _stopBlockTimer() {
+    _blockTimer.cancel();
+  }
+
   Future<void> _onClickEmailLogin() async {
-    print("_onClickEmailLogin");
+    if (_isBlocked) {
+      setState(() {
+        _status = 'Conta bloqueada. Tente novamente mais tarde.';
+      });
+      return;
+    }
 
     String email = _email.text;
     String pass = _password.text;
@@ -31,10 +61,16 @@ class _LoginPageState extends State<LoginPage> {
         context,
         MaterialPageRoute(builder: (context) => const Home()),
       );
+      _resetLoginAttempts(); // Resetar contagem de tentativas após login bem-sucedido
     } catch (e) {
       setState(() {
         if (e is FirebaseAuthException) {
           if (e.code == 'user-not-found' || e.code == 'wrong-password') {
+            _loginAttempts++;
+            if (_loginAttempts >= 3) {
+              _isBlocked = true;
+              _startBlockTimer();
+            }
             _status = 'Credenciais inválidas, verifique seu email e senha.';
           } else {
             _status = 'Erro no login: ${e.message}';
@@ -44,6 +80,12 @@ class _LoginPageState extends State<LoginPage> {
         }
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _stopBlockTimer(); // Certifique-se de parar o timer quando o widget for descartado
+    super.dispose();
   }
 
   @override
